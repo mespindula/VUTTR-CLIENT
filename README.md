@@ -11,3 +11,7 @@ front-end para a aplicação VUTTR
     npm install bootstrap
     npm install react-router-dom
     npm install axios
+
+# Docker
+	https://hub.docker.com/r/mespindula/vuttr-cliente
+    run -it -p 3001:3000 mespindula/vuttr-cliente
