@@ -22,7 +22,7 @@ const ToolsList = () => {
 
   useEffect(() => {
     retrieveTools();
-  }, []);
+  });
 
   const retrieveTools = () => {
     ToolDataService.getAll()
