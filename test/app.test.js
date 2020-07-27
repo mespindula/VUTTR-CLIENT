@@ -4,4 +4,5 @@ describe('React application home page', () => {
         let text = $(".form-control").getText()
         assert.equal(text, 'Search')
     })
+    
 })
