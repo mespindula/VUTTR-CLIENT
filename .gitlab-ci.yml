@@ -4,7 +4,7 @@ stages:
 
 build_npm:
   stage: build
-  image: docker
+  image: tmaier/docker-compose:latest
   services:
     - docker:dind
   script:
