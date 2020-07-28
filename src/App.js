@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-//import AddUser from "./components/AddUser";
-//import User from "./components/User";
 import ToolsList from "./components/ToolsList";
 
 function App() {
