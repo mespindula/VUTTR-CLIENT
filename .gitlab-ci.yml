@@ -1,46 +1,45 @@
 cache:
-    
-    paths:
-      - node_modules/
+  paths:
+    - node_modules/
   
-  stages:
-    - init
-    - deploy_qa
-    - test_qa
-    - deploy_prod
+stages:
+  - init
+  - deploy_qa
+  - test_qa
+  - deploy_prod
   
-  init:
-    stage: init
-    image: node:12.16.1
-    script:
-      - npm install
+init:
+  stage: init
+  image: node:12.16.1
+  script:
+    - npm install
   
-  deploy_qa:
-    image: node:12.16.1
-    stage: deploy_qa
-    script:
-      - git push https://$HEROKU_USER:$HEROKU_API_KEY@git.heroku.com/vuttr-qa.git HEAD:master
-      - echo "Deployed to qa server"
-    environment:  
-      name: qa
-      url: https://vuttr-qa.herokuapp.com/
-    only:
-      - master
+deploy_qa:
+  image: node:12.16.1
+  stage: deploy_qa
+  script:
+    - git push https://$HEROKU_USER:$HEROKU_API_KEY@git.heroku.com/vuttr-qa.git HEAD:master
+    - echo "Deployed to qa server"
+  environment:  
+    name: qa
+    url: https://vuttr-qa.herokuapp.com/
+  only:
+    - master
   
-  test_qa:
-    stage: test_qa
-    image: trion/ng-cli-e2e
-    script:
-      - ENV=qa npm run wdioTest
+test_qa:
+  stage: test_qa
+  image: trion/ng-cli-e2e
+  script:
+    - ENV=qa npm run wdioTest
   
-  deploy_production:
-    image: node:12.16.1
-    stage: deploy_prod
-    script:
-      - git push https://$HEROKU_USER:$HEROKU_API_KEY@git.heroku.com/vuttr-test-prod.git HEAD:master
-      - echo "Deployed to production server"
-    environment:  
-      name: production
-      url: https://vuttr-test-prod.herokuapp.com/
-    only:
-      - master
+deploy_production:
+  image: node:12.16.1
+  stage: deploy_prod
+  script:
+    - git push https://$HEROKU_USER:$HEROKU_API_KEY@git.heroku.com/vuttr-test-prod.git HEAD:master
+    - echo "Deployed to production server"
+  environment:  
+    name: production
+    url: https://vuttr-test-prod.herokuapp.com/
+  only:
+    - master
