@@ -1,14 +1,14 @@
 stages:
-  -  test
+  -  build
   -  package
   -  deploy
-    
-test:
-  stage: test
+
+build_npm:
   image: node:latest
+  stage: build
   script:
-  -  npm install
-  -  npm run test
+    -  npm install
+    -  npm run build:prod
 
 build_image:
   image: docker:latest
