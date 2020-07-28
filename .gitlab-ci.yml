@@ -1,45 +1,23 @@
-cache:
-  paths:
-    - node_modules/
-  
 stages:
-  - init
-  - deploy_qa
-  - test_qa
-  - deploy_prod
-  
-init:
-  stage: init
-  image: node:12.16.1
+  - package
+  - deploy
+
+build_image:
+  image: docker:latest
+  services:
+  - docker:dind
+  stage: package
   script:
-    - npm install
-  
-deploy_qa:
-  image: node:12.16.1
-  stage: deploy_qa
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/mespindula/vuttr-client .
+    - docker push registry.gitlab.com/mespindula/vuttr-client
+
+deploy_to_heroku:
+  stage: deploy
+  services:
+  - docker:dind
   script:
-    - git push https://$HEROKU_USER:$HEROKU_API_KEY@git.heroku.com/vuttr-qa.git HEAD:master
-    - echo "Deployed to qa server"
-  environment:  
-    name: qa
-    url: https://vuttr-qa.herokuapp.com/
-  only:
-    - master
-  
-test_qa:
-  stage: test_qa
-  image: trion/ng-cli-e2e
-  script:
-    - ENV=qa npm run wdioTest
-  
-deploy_production:
-  image: node:12.16.1
-  stage: deploy_prod
-  script:
-    - git push https://$HEROKU_USER:$HEROKU_API_KEY@git.heroku.com/vuttr-test-prod.git HEAD:master
-    - echo "Deployed to production server"
-  environment:  
-    name: production
-    url: https://vuttr-test-prod.herokuapp.com/
-  only:
-    - master
+    - docker login --email=_ --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    - docker tag registry.gitlab.com/mespindula/vuttr-client registry.heroku.com/mespindula/vuttr-client
+    - docker push registry.heroku.com/mespindula/vuttr-client
+    
