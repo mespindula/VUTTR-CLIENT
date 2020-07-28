@@ -5,7 +5,7 @@ stages:
 build_image:
   image: docker:latest
   services:
-  - docker:dind
+    - docker:dind
   stage: package
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
@@ -15,9 +15,9 @@ build_image:
 deploy_to_heroku:
   stage: deploy
   services:
-  - docker:dind
+    - docker:dind
   script:
-    - docker login --email=_ --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    - docker login --email=mespindula@gmail.com --username=$HEROKU_USER --password=$HEROKU_API_KEY registry.heroku.com
     - docker tag registry.gitlab.com/mespindula/vuttr-client registry.heroku.com/mespindula/vuttr-client
     - docker push registry.heroku.com/mespindula/vuttr-client
     
