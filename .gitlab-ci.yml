@@ -1,6 +1,13 @@
 stages:
-  - package
-  - deploy
+  -  test
+  -  package
+  -  deploy
+    
+  test:
+    image: node:latest
+    script:
+      -  npm install
+      -  npm run test
 
 build_image:
   image: docker:latest
