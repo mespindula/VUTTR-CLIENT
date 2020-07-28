@@ -1,24 +1,14 @@
 stages:
   -  build
-  -  package
   -  deploy
 
 build_npm:
-  image: node:latest
   stage: build
-  script:
-    -  npm install
-    -  npm run build:prod
-
-build_image:
-  image: docker:latest
+  image: docker
   services:
     - docker:dind
-  stage: package
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/mespindula/vuttr-client .
-    - docker push registry.gitlab.com/mespindula/vuttr-client
+    - docker-compose build
 
 deploy_to_heroku:
   stage: deploy
